@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>달력</title>
+    <link rel="stylesheet" href="./assets/styles/index.css" />
+    <script src="./app/index.js"></script>
+  </head>
+  <body onload="buildCalendar();">
+    <div class="conatiner">
+      <div class="container_left">
+        awdawd
+      </div>
+      <div class="container_right">
+        <table
+          id="calendar"
+          align="center"
+        >
+          <tr>
+            <!-- label은 마우스로 클릭을 편하게 해줌 -->
+            <td><label onclick="prevCalendar()"><</label></td>
+            <td align="center" id="tbCalendarYM" colspan="5"></td>
+            <td><label onclick="nextCalendar()">> </label></td>
+          </tr>
+          <tr>
+            <td align="center">S</td>
+            <td align="center">M</td>
+            <td align="center">T</td>
+            <td align="center">W</td>
+            <td align="center">T</td>
+            <td align="center">F</td>
+            <td align="center">S</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>
