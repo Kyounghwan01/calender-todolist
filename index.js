@@ -11,34 +11,42 @@ function nextCalendar() {
 }
 function buildCalendar() {
   var monthText = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
   ];
   var weekText = [
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-    'Sunday',
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday"
   ];
   var doMonth = new Date(today.getFullYear(), today.getMonth(), 1);
   var lastDate = new Date(today.getFullYear(), today.getMonth() + 1, 0);
   var tbCalendar = document.getElementById("calendar");
   var tbCalendarYM = document.getElementById("tbCalendarYM");
+  var pointDate = document.getElementById("pointDate");
+  var pointDay = document.getElementById("pointDay");
+  pointDate.innerHTML = today.getDate();
+  pointDay.innerHTML =
+    weekText[
+      new Date(today.getFullYear(), today.getMonth(), today.getDate()).getDay()
+    ];
+
   tbCalendarYM.innerHTML =
-  monthText[(today.getMonth())] +" "+ today.getFullYear();
+    monthText[today.getMonth()] + " " + today.getFullYear();
 
   while (tbCalendar.rows.length > 2) {
     tbCalendar.deleteRow(tbCalendar.rows.length - 1);
@@ -55,6 +63,8 @@ function buildCalendar() {
     cell = row.insertCell();
     cell.innerHTML = i;
     cnt = cnt + 1;
+    cell.addEventListener("click", point);
+
     if (cnt % 7 == 1) {
       cell.innerHTML = "<font>" + i;
     }
@@ -71,5 +81,17 @@ function buildCalendar() {
       cell.style.color = "white";
       cell.style.borderRadius = "10px";
     }
+  }
+  function point() {
+    Point = event.target.firstChild.nodeValue;
+    pointDate.innerHTML = Point;
+    pointDay.innerHTML =
+      weekText[new Date(today.getFullYear(), today.getMonth(), Point).getDay()];
+    if (document.querySelector(".pointDay") == null) {
+      event.target.classList.add("pointDay");
+    } else {
+      document.querySelector(".pointDay").classList.remove("pointDay");
+    }
+    event.target.classList.add("pointDay");
   }
 }
