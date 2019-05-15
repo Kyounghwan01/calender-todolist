@@ -4,7 +4,7 @@
 
 var today = new Date();
 var date = new Date();
-var TODOS_LS = today.getDate();
+var TODOS_LS = 13;
 function prevCalendar() {
   today = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate());
   buildCalendar();
@@ -132,6 +132,7 @@ function saveToDos(){
 
 function paintToDo(text) {
     // 리스트 넣을 li 엘리먼트 생성 
+    debugger;
   const li = document.createElement("li");
   li.style.overflow = "hidden";
   //삭제버튼 생성
@@ -165,6 +166,7 @@ function handleSubmit(event) {
 }
 
 function loadToDos() {
+    debugger;
   const loadedToDos = localStorage.getItem(TODOS_LS);
   if(loadedToDos !== null){
       const parsedToDos = JSON.parse(loadedToDos);
