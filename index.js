@@ -1,5 +1,10 @@
+//---------------------------------------------calendar
+//-----------------------------------------------------
+//---------------------------------------------calendar
+
 var today = new Date();
 var date = new Date();
+var TODOS_LS = today.getDate();
 function prevCalendar() {
   today = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate());
   buildCalendar();
@@ -83,7 +88,8 @@ function buildCalendar() {
     }
   }
   function point() {
-    Point = event.target.firstChild.nodeValue;
+    var Point = event.target.firstChild.nodeValue;
+    //console.log(Point);
     pointDate.innerHTML = Point;
     pointDay.innerHTML =
       weekText[new Date(today.getFullYear(), today.getMonth(), Point).getDay()];
@@ -93,47 +99,78 @@ function buildCalendar() {
       document.querySelector(".pointDay").classList.remove("pointDay");
     }
     event.target.classList.add("pointDay");
+    TODOS_LS = parseInt(Point);
   }
 }
 
-// ----------------------------------------- todo list 
-// --------------------------------------------------- 
-// ---------------------------------------------------
-// ----------------------------------------- todo list 
+// -------------------------------------------- todo list 
+// ------------------------------------------------------ 
+// -------------------------------------------- todo list 
 
 const toDoForm = document.querySelector(".js-toDoForm"),
   toDoInput = toDoForm.querySelector("input"),
   toDoList = document.querySelector(".js-toDoList");
 
-const TODOS_LS = "toDos";
+
+console.log(TODOS_LS);
+let toDos = [];
+
+function deleteToDo(event){
+    const btn = event.target;
+    const li = btn.parentNode;
+    toDoList.removeChild(li);
+    const cleanToDos = toDos.filter(function(toDo){
+        return toDo.id !== parseInt(li.id);
+    });
+    toDos = cleanToDos;
+    saveToDos();
+}
+
+function saveToDos(){
+    localStorage.setItem(TODOS_LS,JSON.stringify(toDos));
+}
 
 function paintToDo(text) {
     // 리스트 넣을 li 엘리먼트 생성 
   const li = document.createElement("li");
+  li.style.overflow = "hidden";
   //삭제버튼 생성
-  const delBtn = document.createElement("button");
-  delBtn.innerText = "❌";
+  const delBtn = document.createElement("i");
+  delBtn.addEventListener("click",deleteToDo);
   const span = document.createElement("span");
-  span.innerText = text;
+  span.style.float = "left";
+  span.style.fontSize = "15px";
+  span.style.letterSpacing = "0.5px";
+  const newId = toDos.length + 1;
+  delBtn.className = "fas fa-backspace";
+  delBtn.style.float = "right";
+  span.innerText = "- "+text;
   li.appendChild(delBtn);
-  //li 안에 버튼 넣기
   li.appendChild(span);
-  //li안에 span 넣기
-  toDoList.appendChild(li);
-  //toDoList안에 li 넣기 
+  li.id = newId;
+  toDoList.appendChild(li); 
+  const toDoObj = {
+      text : text,
+      id : toDos.length + 1
+  }
+  toDos.push(toDoObj);
+  saveToDos();
 }
 
 function handleSubmit(event) {
   event.preventDefault();
   const currentValue = toDoInput.value;
   paintToDo(currentValue);
-  //쓰고 엔터시 빈공간
   toDoInput.value = "";
 }
 
 function loadToDos() {
-  const toDos = localStorage.getItem(TODOS_LS);
-  if (toDos !== null) {
+  const loadedToDos = localStorage.getItem(TODOS_LS);
+  if(loadedToDos !== null){
+      const parsedToDos = JSON.parse(loadedToDos);
+      parsedToDos.forEach(function(toDo){
+          paintToDo(toDo.text);
+      });
   }
 }
 
