@@ -2,44 +2,57 @@
 <html>
   <head>
     <title>Calendar-todo</title>
-    <link rel="stylesheet" href="./assets/styles/index.css" />
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
-    <meta charset="utf-8"/>
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+      integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="./assets/styles/index.css">
+    
+    <meta charset="utf-8" />
   </head>
-  <body onload="buildCalendar(); bringDays();">
-    <div class="conatiner">
-      <div class="container_left">
-        <div>
-          <div id="pointDay"></div>
-          <div id="pointDate"></div>
+  <body>
+    <div class="world">
+      <div class="conatiner">
+        <div class="container_left">
+          <div>
+            <div id="pointDay"></div>
+            <div id="pointDate"></div>
+          </div>
+          <div class="container_left_bot">
+            <div class="todo_title">To do list :</div>
+            <form class="js-toDoForm">
+              <input
+                type="text"
+                placeholder="Write a to do then enter!"
+                class="add-event-day"
+              />
+            </form>
+            <ul class="js-toDoList"></ul>
+          </div>
         </div>
-        <div class="container_left_bot">
-          <div class="todo_title">To do list :</div>
-          <form class="js-toDoForm">
-              <input type="text" placeholder="Write a to do then enter!" class="add-event-day"/>
-          </form>
-          <ul class="js-toDoList">
-          </ul>
+        <div class="container_right">
+          <table id="calendar" align="center">
+            <thead>
+              <tr>
+                <td><label onclick="prevCalendar();"><</label></td>
+                <td align="center" id="monthAndYear" colspan="5"></td>
+                <td><label onclick="nextCalendar()">> </label></td>
+              </tr>
+              <tr>
+                <td align="center">S</td>
+                <td align="center">M</td>
+                <td align="center">T</td>
+                <td align="center">W</td>
+                <td align="center">T</td>
+                <td align="center">F</td>
+                <td align="center">S</td>
+              </tr>
+            </thead>
+            <tbody id="calendar-body"></tbody>
+          </table>
         </div>
-      </div>
-      <div class="container_right">
-        <table id="calendar" align="center">
-          <tr>
-            <!-- label은 마우스로 클릭을 편하게 해줌 -->
-            <td><label onclick="prevCalendar();"><</label></td>
-            <td align="center" id="tbCalendarYM" colspan="5"></td>
-            <td><label onclick="nextCalendar()">> </label></td>
-          </tr>
-          <tr>
-            <td align="center">S</td>
-            <td align="center">M</td>
-            <td align="center">T</td>
-            <td align="center">W</td>
-            <td align="center">T</td>
-            <td align="center">F</td>
-            <td align="center">S</td>
-          </tr>
-        </table>
       </div>
     </div>
     <script src="./app/index.js"></script>
