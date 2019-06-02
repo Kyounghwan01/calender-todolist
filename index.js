@@ -63,7 +63,6 @@ function nextCalendar() {
     todayKeyValue = today.getDate() + "/" + (today.getMonth() + 1) + "/" + today.getFullYear();
     showCalendar(currentYear, currentMonth);
     loadToDos(today.getDate() + "/" + (today.getMonth() + 1) + "/" + today.getFullYear());
-    point(todayKeyValue);
   }
 }
 
