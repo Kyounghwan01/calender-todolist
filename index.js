@@ -3,7 +3,6 @@ let today = new Date(),
   currentMonth = today.getMonth(),
   currentYear = today.getFullYear(),
   monthAndYear = document.getElementById("monthAndYear"),
-  pointId,
   tempKeyId,
   textData = [],
   monthText = [
@@ -33,13 +32,14 @@ let today = new Date(),
 const toDoForm = document.querySelector(".js-toDoForm"),
   toDoInput = toDoForm.querySelector("input"),
   toDoList = document.querySelector(".js-toDoList");
+
 window.prevCalendar = prevCalendar;
 window.nextCalendar = nextCalendar;
 
 function prevCalendar() {
   currentYear = currentMonth === 0 ? currentYear - 1 : currentYear;
   currentMonth = currentMonth === 0 ? 11 : currentMonth - 1;
-  if (currentMonth === 4 && currentYear === 2019) {
+  if (currentMonth === temp.getMonth() && currentYear === temp.getFullYear()) {
     today = new Date(today.getFullYear(), today.getMonth() - 1, temp.getDate());
     showCalendar(currentYear, currentMonth);
     loadToDos(temp.getDate() + "/" + (today.getMonth() + 1) + "/" + today.getFullYear());
@@ -54,7 +54,7 @@ function prevCalendar() {
 function nextCalendar() {
   currentYear = currentMonth === 11 ? currentYear + 1 : currentYear;
   currentMonth = currentMonth === 11 ? 0 : currentMonth + 1;
-  if (currentMonth === 4 && currentYear === 2019) {
+  if (currentMonth === temp.getMonth() && currentYear === temp.getFullYear()) {
     today = new Date(today.getFullYear(), today.getMonth() + 1, temp.getDate());
     showCalendar(currentYear, currentMonth);
     loadToDos(temp.getDate() + "/" + (today.getMonth() + 1) + "/" + today.getFullYear());
@@ -121,13 +121,13 @@ function point(cell) {
   pointDate.innerHTML = Point;
   pointDay.innerHTML =
     weekText[new Date(today.getFullYear(), today.getMonth(), Point).getDay()];
-  if (document.querySelector(".pointDay") == null) {
+  if (document.querySelector(".pointDay") === null) {
     event.target.classList.add("pointDay");
   } else {
     document.querySelector(".pointDay").classList.remove("pointDay");
   }
   event.target.classList.add("pointDay");
-  pointId = document.getElementById(cell.id).id;
+  todayKeyValue = cell.id;
   loadToDos(cell.id);
   write(cell.id);
 }
@@ -161,10 +161,7 @@ function handleSubmit(event) {
   event.preventDefault();
   const currentValue = toDoInput.value;
   paintToDo(currentValue);
-  if (pointId === undefined) {
-    pointId = todayKeyValue;
-  }
-  write(pointId, currentValue);
+  write(todayKeyValue, currentValue);
   toDoInput.value = "";
 }
 
