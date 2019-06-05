@@ -28,7 +28,8 @@ let today = new Date(),
     "Friday",
     "Saturday"
   ],
-  todayKeyValue = today.getDate() + "/" + (today.getMonth() + 1) + "/" + today.getFullYear();
+  todayKeyValue =
+    today.getDate() + "/" + (today.getMonth() + 1) + "/" + today.getFullYear();
 const toDoForm = document.querySelector(".js-toDoForm"),
   toDoInput = toDoForm.querySelector("input"),
   toDoList = document.querySelector(".js-toDoList");
@@ -42,12 +43,21 @@ function prevCalendar() {
   if (currentMonth === temp.getMonth() && currentYear === temp.getFullYear()) {
     today = new Date(today.getFullYear(), today.getMonth() - 1, temp.getDate());
     showCalendar(currentYear, currentMonth);
-    loadToDos(temp.getDate() + "/" + (today.getMonth() + 1) + "/" + today.getFullYear());
+    loadToDos(
+      temp.getDate() + "/" + (today.getMonth() + 1) + "/" + today.getFullYear()
+    );
   } else {
     today = new Date(today.getFullYear(), today.getMonth() - 1);
-    todayKeyValue = today.getDate() + "/" + (today.getMonth() + 1) + "/" + today.getFullYear()
+    todayKeyValue =
+      today.getDate() +
+      "/" +
+      (today.getMonth() + 1) +
+      "/" +
+      today.getFullYear();
     showCalendar(currentYear, currentMonth);
-    loadToDos(today.getDate() + "/" + (today.getMonth() + 1) + "/" + today.getFullYear());
+    loadToDos(
+      today.getDate() + "/" + (today.getMonth() + 1) + "/" + today.getFullYear()
+    );
   }
 }
 
@@ -57,12 +67,21 @@ function nextCalendar() {
   if (currentMonth === temp.getMonth() && currentYear === temp.getFullYear()) {
     today = new Date(today.getFullYear(), today.getMonth() + 1, temp.getDate());
     showCalendar(currentYear, currentMonth);
-    loadToDos(temp.getDate() + "/" + (today.getMonth() + 1) + "/" + today.getFullYear());
+    loadToDos(
+      temp.getDate() + "/" + (today.getMonth() + 1) + "/" + today.getFullYear()
+    );
   } else {
     today = new Date(today.getFullYear(), today.getMonth() + 1);
-    todayKeyValue = today.getDate() + "/" + (today.getMonth() + 1) + "/" + today.getFullYear();
+    todayKeyValue =
+      today.getDate() +
+      "/" +
+      (today.getMonth() + 1) +
+      "/" +
+      today.getFullYear();
     showCalendar(currentYear, currentMonth);
-    loadToDos(today.getDate() + "/" + (today.getMonth() + 1) + "/" + today.getFullYear());
+    loadToDos(
+      today.getDate() + "/" + (today.getMonth() + 1) + "/" + today.getFullYear()
+    );
   }
 }
 
@@ -151,7 +170,7 @@ function write(cell, currentValue) {
       textData = JSON.parse(localStorage.getItem(keyId));
     }
   }
-  const textObj = { text: currentValue };
+  const textObj = { id: textData.length + 1, text: currentValue };
   textData.push(textObj);
   localStorage.setItem(keyId, JSON.stringify(textData));
   tempKeyId = keyId;
@@ -169,6 +188,7 @@ function loadToDos(cell) {
   const loadId = document.getElementById(cell).id;
   const loadedToDos = JSON.parse(localStorage.getItem(loadId));
   let lis = document.querySelectorAll("li");
+  console.log(lis.length);
   for (let i = 0; (li = lis[i]); i++) {
     li.parentNode.removeChild(li);
   }
@@ -183,13 +203,39 @@ function paintToDo(text) {
   if (text !== "") {
     const li = document.createElement("li");
     li.style.overflow = "hidden";
+    const delbtn = document.createElement("i");
+    // const newId = textData.length + 1;
+    delbtn.style.cursor = "pointer";
+    delbtn.style.float = "right";
+    delbtn.addEventListener("click", deleteToDo);
+    delbtn.className = "fas fa-backspace";
     const span = document.createElement("span");
     span.style.float = "left";
     span.style.fontSize = "15px";
     span.style.letterSpacing = "0.5px";
     span.innerText = "- " + text;
+    li.appendChild(delbtn);
     li.appendChild(span);
+    //li.id = newId;
+    let lis = document.querySelectorAll("li");
+    for (let i = 0; i <= lis.length; i++) {
+      li.id = i + 1;
+    }
     toDoList.appendChild(li);
+  }
+}
+
+function deleteToDo(e) {
+  let confirm_delete = confirm("삭제하시겠습니까?");
+  if (confirm_delete === true) {
+    let btn = e.target;
+    let li = btn.parentNode;
+    toDoList.removeChild(li);
+    const cleanToDos = textData.filter(function(toDo) {
+      return toDo.id !== parseInt(li.id);
+    });
+    textData = cleanToDos;
+    localStorage.setItem(todayKeyValue, JSON.stringify(textData));
   }
 }
 
