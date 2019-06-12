@@ -229,7 +229,7 @@ function paintToDo(text) {
     li.appendChild(circle);
     let lis = document.querySelectorAll("li");
     for (let i = 0; i <= lis.length; i++) {
-      li.id = i + 1;
+      li.dataset.id = i + 1;
     }
     toDoList.appendChild(li);
   }
@@ -242,7 +242,7 @@ function deleteToDo(e) {
     let li = btn.parentNode;
     toDoList.removeChild(li);
     const cleanToDos = textData.filter(function(toDo) {
-      return toDo.id !== parseInt(li.id);
+      return toDo.id !== parseInt(li.dataset.id);
     });
     textData = cleanToDos;
     localStorage.setItem(todayKeyValue, JSON.stringify(textData));
@@ -251,5 +251,3 @@ function deleteToDo(e) {
 
 showCalendar(currentYear, currentMonth);
 loadToDos(todayKeyValue);
-
-// 날짜 데이터 dataset에 등록하기
