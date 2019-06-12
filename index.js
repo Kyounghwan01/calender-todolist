@@ -31,7 +31,8 @@ let today = new Date(),
   todayKeyValue =
     today.getDate() + "/" + (today.getMonth() + 1) + "/" + today.getFullYear();
 const toDoForm = document.querySelector(".js-toDoForm"),
-  toDoInput = toDoForm.querySelector("input"),
+  toDoInput = toDoForm.querySelector(".add-event-day"),
+  toDoInputDay = toDoForm.querySelector(".add-d-day"),
   toDoList = document.querySelector(".js-toDoList");
 
 window.prevCalendar = prevCalendar;
@@ -112,7 +113,7 @@ function showCalendar(year, month) {
         break;
       } else {
         let cell = document.createElement("td");
-        cell.id =
+        cell.dataset.id =
           date + "/" + (today.getMonth() + 1) + "/" + today.getFullYear();
         let cellText = document.createTextNode(date);
         cell.style.cursor = "pointer";
@@ -146,9 +147,9 @@ function point(cell) {
     document.querySelector(".pointDay").classList.remove("pointDay");
   }
   event.target.classList.add("pointDay");
-  todayKeyValue = cell.id;
-  loadToDos(cell.id);
-  write(cell.id);
+  todayKeyValue = cell.dataset.id;
+  loadToDos(cell.dataset.id);
+  write(cell.dataset.id);
 }
 
 if (JSON.parse(localStorage.getItem(todayKeyValue)) === null) {
@@ -157,9 +158,9 @@ if (JSON.parse(localStorage.getItem(todayKeyValue)) === null) {
   textData = JSON.parse(localStorage.getItem(todayKeyValue));
 }
 
-function write(cell, currentValue) {
+function write(cell, currentValue, Dday) {
   if (currentValue === undefined || currentValue === "") return;
-  const keyId = document.getElementById(cell).id;
+  const keyId = cell;
   if (tempKeyId === undefined) {
     tempKeyId = keyId;
   }
@@ -170,7 +171,7 @@ function write(cell, currentValue) {
       textData = JSON.parse(localStorage.getItem(keyId));
     }
   }
-  const textObj = { id: textData.length + 1, text: currentValue };
+  const textObj = { id: textData.length + 1, text: currentValue, Dday: Dday };
   textData.push(textObj);
   localStorage.setItem(keyId, JSON.stringify(textData));
   tempKeyId = keyId;
@@ -178,17 +179,18 @@ function write(cell, currentValue) {
 
 function handleSubmit(event) {
   event.preventDefault();
+  const Dday = toDoInputDay.value;
   const currentValue = toDoInput.value;
   paintToDo(currentValue);
-  write(todayKeyValue, currentValue);
+  write(todayKeyValue, currentValue, Dday);
   toDoInput.value = "";
+  toDoInputDay.value = "";
 }
 
 function loadToDos(cell) {
-  const loadId = document.getElementById(cell).id;
+  const loadId = cell;
   const loadedToDos = JSON.parse(localStorage.getItem(loadId));
   let lis = document.querySelectorAll("li");
-  console.log(lis.length);
   for (let i = 0; (li = lis[i]); i++) {
     li.parentNode.removeChild(li);
   }
@@ -204,11 +206,19 @@ function paintToDo(text) {
     const li = document.createElement("li");
     li.style.overflow = "hidden";
     const delbtn = document.createElement("i");
-    // const newId = textData.length + 1;
-    delbtn.style.cursor = "pointer";
-    delbtn.style.float = "right";
+    const circle = document.createElement("i");
+    circle.className = "fas fa-circle";
+    circle.classList.add("paintAdd");
+    //현재일보다 2주이하 남으면 class red 추가 아니면 class blue추가
+    // let loc = localStorage.getItem(todayKeyValue);
+    // console.log(loc.length);
+    //if()
+    circle.classList.add("circleBlue");
+    //circle.classList.add('circleRed');
+
     delbtn.addEventListener("click", deleteToDo);
     delbtn.className = "fas fa-backspace";
+    delbtn.classList.add("paintAdd");
     const span = document.createElement("span");
     span.style.float = "left";
     span.style.fontSize = "15px";
@@ -216,7 +226,7 @@ function paintToDo(text) {
     span.innerText = "- " + text;
     li.appendChild(delbtn);
     li.appendChild(span);
-    //li.id = newId;
+    li.appendChild(circle);
     let lis = document.querySelectorAll("li");
     for (let i = 0; i <= lis.length; i++) {
       li.id = i + 1;
@@ -241,3 +251,5 @@ function deleteToDo(e) {
 
 showCalendar(currentYear, currentMonth);
 loadToDos(todayKeyValue);
+
+// 날짜 데이터 dataset에 등록하기
